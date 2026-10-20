@@ -1,0 +1,17 @@
+---
+description: Checklist of errors AI assistants typically make in ABAP; self-check before answering.
+globs:
+alwaysApply: true
+---
+# Self-check before answering (common AI mistakes in ABAP)
+
+1. Did I use an object I am not sure exists? Name it and flag it "verify". Do not guess the parameters of a function module or BAPI: look up the signature (SE37 / ADT) or ask.
+2. BAPIs report errors in their `RETURN` table, not via `sy-subrc` or exceptions. Check for message types `E` / `A`. Commit separately (`BAPI_TRANSACTION_COMMIT`), but **never** inside RAP or inside a loop over single records.
+3. Did I mix releases (e.g. `@DATA` inline in SQL on 7.40 SP05, `+=` on 7.50, `define view entity` on 7.50)?
+4. Did I use Java/C#/JS habits? There is no `return x;` (use `result = x.` then `RETURN.`), no `null` (`IS INITIAL` / `IS NOT BOUND`), no `++`, no `!=` (use `<>`), and string literals are `` `...` `` or `'...'`, not `"..."` (in ABAP `"` starts a comment).
+5. Every statement ends with a period, and chains `:` are used deliberately. Keywords are not case-sensitive, but follow the project's pretty-printer setting.
+6. Did I leave an empty FOR ALL ENTRIES driver unguarded, or a `SELECT` in a loop?
+7. Did I catch `CX_ROOT` or swallow exceptions? Catch the specific class, or wrap and re-raise.
+8. In ABAP Cloud, did I use `sy-datum`, `WRITE`, a classic FM, or a non-released table?
+9. Did I invent a transaction code, a customizing path, or an SAP Note number? Do not cite SAP Notes from memory.
+10. Is my answer ATC-clean and covered by a unit test?

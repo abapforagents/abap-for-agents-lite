@@ -1,0 +1,23 @@
+---
+applyTo: "**/*.abap"
+---
+# ABAP SQL
+
+## Sintaxe (strict mode)
+- Faz escape de **todas** as variáveis host com `@` e separa as listas com vírgulas. Basta usar uma funcionalidade moderna (`@`, vírgulas, expressões SQL, `@DATA` inline) para a instrução ser verificada em strict mode, por isso é tudo ou nada dentro da mesma instrução.
+- `INTO` no fim (7.40 SP08+): `SELECT f1, f2 FROM t WHERE k = @key INTO TABLE @DATA(result).` O `UP TO n ROWS` vem depois do `INTO`.
+- Indica as colunas de que precisas. Nada de `SELECT *` em tabelas largas.
+
+## Armadilhas de correção
+- **FOR ALL ENTRIES com a tabela de entrada vazia ignora o WHERE inteiro e lê todas as linhas.** Protege sempre com `IF itab IS NOT INITIAL.`
+- O FOR ALL ENTRIES remove linhas duplicadas do resultado. Seleciona todos os campos chave, senão perdes dados sem aviso.
+- `SELECT SINGLE` é para a chave primária completa. Caso contrário usa `SELECT ... ORDER BY ... INTO @... UP TO 1 ROWS` para o resultado ser determinístico.
+- Depois de um `SELECT` verifica `sy-subrc` / `sy-dbcnt`. As expressões de tabela (`itab[ ... ]`) **não** preenchem `sy-subrc`: lançam `CX_SY_ITAB_LINE_NOT_FOUND` (exceção: `ASSIGN itab[ ... ] TO <fs>` preenche `sy-subrc` e não lança nada). Usa `line_exists( )`, `VALUE #( itab[ ... ] OPTIONAL )` (7.40 SP08+) ou `TRY ... CATCH`.
+
+## Performance
+- Nada de `SELECT` dentro de `LOOP`. Usa JOIN, subquery, `FROM @itab` (7.52+) ou um único FOR ALL ENTRIES protegido.
+- Leva agregações, filtros e lógica CASE para o SQL ou CDS. Não filtres grandes resultados em ABAP.
+- Em S/4HANA prefere views CDS libertadas a leituras diretas de tabelas (ver regras S/4).
+
+## ABAP Cloud
+- Só podes ler views CDS ou tabelas libertadas. `USING CLIENT` e SQL nativo (`EXEC SQL`) não são permitidos em ABAP for Cloud Development.

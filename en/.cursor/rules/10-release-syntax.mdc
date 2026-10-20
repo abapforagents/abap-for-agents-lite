@@ -1,0 +1,25 @@
+---
+description: Which modern ABAP syntax is available on which release. Use when writing ABAP for a known or unknown release.
+globs: **/*.abap
+alwaysApply: false
+---
+# Syntax availability by release (check before using)
+
+| Feature | Available from |
+|---|---|
+| Inline declarations `DATA(...)`, `FIELD-SYMBOL(...)`; constructor ops `NEW VALUE REF EXACT CONV CAST COND SWITCH`; table expressions `itab[ ... ]` | 7.40 SP02 |
+| `CORRESPONDING #( )`, `LET`, table comprehensions `VALUE #( FOR wa IN itab ( ... ) )` | 7.40 SP05 |
+| ABAP SQL: `@` escaping of host variables, comma-separated lists, SQL expressions (strict mode) | 7.40 SP05 |
+| ABAP SQL: inline `INTO @DATA(...)` / `INTO TABLE @DATA(...)`; `INTO` as last clause | 7.40 SP08 |
+| `REDUCE`, `FOR ... UNTIL/WHILE`, `FILTER`, `xsdbool( )`, predicative method calls `IF meth( ).`, `VALUE #( itab[ ... ] OPTIONAL / DEFAULT ... )` | 7.40 SP08 |
+| `SELECT FROM ... FIELDS ...` (FROM first) | 7.50 |
+| `TYPES BEGIN OF ENUM` | 7.51 |
+| `RAISE EXCEPTION NEW cx_...( )`; internal tables as data source `SELECT ... FROM @itab` | 7.52 |
+| `RAISE SHORTDUMP` | 7.53 |
+| Calculation assignments `+=  -=  *=  /=  &&=` | 7.54 |
+| CDS view entities `DEFINE VIEW ENTITY` | 7.55 (S/4HANA 2020) |
+
+- On 7.40 SP05/SP06/SP07, `SELECT ... INTO TABLE @DATA(x)` is a **syntax error**. Declare the target first.
+- Below 7.54 write `index = index + 1.` and not `index += 1.`
+- `boolc( )` returns `string`. Use `xsdbool( )` (type c length 1, compatible with `abap_bool`).
+- If the release is unknown and the user did not ask for modern syntax, prefer the 7.50-compatible form and mention the modern alternative in one line.

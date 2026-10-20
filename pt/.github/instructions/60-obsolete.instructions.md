@@ -1,0 +1,26 @@
+---
+applyTo: "**/*.abap"
+---
+# Não gerar ABAP obsoleto ou desatualizado em código novo
+
+| Em vez de | Escreve |
+|---|---|
+| `MOVE a TO b.` / `COMPUTE` | `b = a.` |
+| `ADD 1 TO x.` | `x += 1.` (7.54+) ou `x = x + 1.` |
+| `DATA itab TYPE ... OCCURS 0 WITH HEADER LINE` / instrução `TABLES` / parâmetros `TABLES` | Work area explícita ou `DATA(...)` inline; tipo tabela como IMPORTING/RETURNING |
+| `RANGES r FOR f.` | `DATA r TYPE RANGE OF ...` |
+| `CALL METHOD obj->m EXPORTING ...` | `obj->m( ... )` |
+| `CREATE OBJECT o TYPE zcl_x.` | `o = NEW zcl_x( ).` |
+| `DESCRIBE TABLE itab LINES n.` | `n = lines( itab ).` |
+| `READ TABLE ... TRANSPORTING NO FIELDS` + verificação de `sy-subrc` | `line_exists( itab[ ... ] )` |
+| `CONCATENATE a b INTO c.` | String template (ver abaixo) ou `c = a && b.` |
+| `TRANSLATE s TO UPPER CASE.` | `s = to_upper( s ).` |
+| `FORM` / `PERFORM` (lógica nova) | Métodos de uma classe (local) |
+| Variáveis host sem escape no SQL | `@var` (strict mode) |
+| `boolc( )` em comparações | `xsdbool( )` |
+| Pseudo-comentários `"#EC ...` | Pragmas `##...` (quando existe) |
+| `define view` + `@AbapCatalog.sqlViewName` | `define view entity` (7.55+) |
+
+- String template para a linha do `CONCATENATE`: ``c = |{ a }{ b }|.``
+- Quando **alteras** código legado, não reescrevas partes que não estão relacionadas. Moderniza só as linhas em que mexes, a não ser que o utilizador peça um refactoring.
+- A maior parte das instruções obsoletas já é proibida dentro de classes e em ABAP for Cloud Development. Se a verificação de sintaxe a rejeitaria nesse contexto, nunca a sugiras.

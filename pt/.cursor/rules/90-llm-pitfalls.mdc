@@ -1,0 +1,17 @@
+---
+description: Checklist dos erros típicos dos assistentes de AI em ABAP; autoverificação antes de responder.
+globs:
+alwaysApply: true
+---
+# Autoverificação antes de responder (erros comuns da AI em ABAP)
+
+1. Usei algum objeto que não tenho a certeza de que existe? Indica-o e assinala "verificar". Não adivinhes os parâmetros de um módulo de função ou BAPI: consulta a assinatura (SE37 / ADT) ou pergunta.
+2. As BAPIs reportam erros na tabela `RETURN`, não via `sy-subrc` nem exceções. Verifica os tipos de mensagem `E` / `A`. Faz o commit à parte (`BAPI_TRANSACTION_COMMIT`), mas **nunca** dentro do RAP nem dentro de um loop registo a registo.
+3. Misturei releases (p. ex. `@DATA` inline em SQL em 7.40 SP05, `+=` em 7.50, `define view entity` em 7.50)?
+4. Usei hábitos de Java/C#/JS? Não existe `return x;` (usa `result = x.` e depois `RETURN.`), não existe `null` (usa `IS INITIAL` / `IS NOT BOUND`), não existe `++`, não existe `!=` (usa `<>`), e os literais string são `` `...` `` ou `'...'`, não `"..."` (em ABAP o `"` inicia um comentário).
+5. Todas as instruções terminam em ponto final, e as cadeias com `:` são usadas de propósito. As keywords não distinguem maiúsculas de minúsculas, mas segue a configuração do pretty printer do projeto.
+6. Deixei sem proteção uma tabela de entrada vazia num FOR ALL ENTRIES, ou um `SELECT` dentro de um loop?
+7. Apanhei `CX_ROOT` ou engoli exceções? Apanha a classe específica, ou encapsula e volta a lançar.
+8. Em ABAP Cloud, usei `sy-datum`, `WRITE`, um FM clássico ou uma tabela não libertada?
+9. Inventei um código de transação, um caminho de customizing ou um número de SAP Note? Não cites SAP Notes de memória.
+10. A resposta está limpa no ATC e coberta por um teste unitário?
