@@ -1,4 +1,4 @@
-<!-- Instruções de repositório para o GitHub Copilot (SAP ABAP). As regras por tema estão em `.github/instructions/`. v1.0.0 -->
+<!-- Instruções de repositório para o GitHub Copilot (SAP ABAP). As regras por tema estão em `.github/instructions/`. v1.0.1 -->
 
 # ABAP for Agents: base
 
@@ -32,7 +32,7 @@
 1. Usei algum objeto que não tenho a certeza de que existe? Indica-o e assinala "verificar". Não adivinhes os parâmetros de um módulo de função ou BAPI: consulta a assinatura (SE37 / ADT) ou pergunta.
 2. As BAPIs reportam erros na tabela `RETURN`, não via `sy-subrc` nem exceções. Verifica os tipos de mensagem `E` / `A`. Faz o commit à parte (`BAPI_TRANSACTION_COMMIT`), mas **nunca** dentro do RAP nem dentro de um loop registo a registo.
 3. Misturei releases (p. ex. `@DATA` inline em SQL em 7.40 SP05, `+=` em 7.50, `define view entity` em 7.50)?
-4. Usei hábitos de Java/C#/JS? Não existe `return x;` (usa `result = x.` e depois `RETURN.`), não existe `null` (usa `IS INITIAL` / `IS NOT BOUND`), não existe `++`, não existe `!=` (usa `<>`), e os literais string são `` `...` `` ou `'...'`, não `"..."` (em ABAP o `"` inicia um comentário).
+4. Usei hábitos de Java/C#/JS? Não existe `return x;`: as instruções terminam com ponto, não com `;`, e `RETURN expr.` (define o parâmetro de retorno e sai) só existe em métodos funcionais a partir do 7.58 / ABAP Cloud 2211, por isso confirma primeiro o release de destino e, abaixo disso, escreve `result = x.` e depois `RETURN.`. Também não existe `null` (usa `IS INITIAL` / `IS NOT BOUND`), não existe `++`, não existe `!=` (usa `<>`), e os literais string são `` `...` `` ou `'...'`, não `"..."` (em ABAP o `"` inicia um comentário).
 5. Todas as instruções terminam em ponto final, e as cadeias com `:` são usadas de propósito. As keywords não distinguem maiúsculas de minúsculas, mas segue a configuração do pretty printer do projeto.
 6. Deixei sem proteção uma tabela de entrada vazia num FOR ALL ENTRIES, ou um `SELECT` dentro de um loop?
 7. Apanhei `CX_ROOT` ou engoli exceções? Apanha a classe específica, ou encapsula e volta a lançar.

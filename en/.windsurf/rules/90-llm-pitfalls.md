@@ -6,7 +6,7 @@ trigger: always_on
 1. Did I use an object I am not sure exists? Name it and flag it "verify". Do not guess the parameters of a function module or BAPI: look up the signature (SE37 / ADT) or ask.
 2. BAPIs report errors in their `RETURN` table, not via `sy-subrc` or exceptions. Check for message types `E` / `A`. Commit separately (`BAPI_TRANSACTION_COMMIT`), but **never** inside RAP or inside a loop over single records.
 3. Did I mix releases (e.g. `@DATA` inline in SQL on 7.40 SP05, `+=` on 7.50, `define view entity` on 7.50)?
-4. Did I use Java/C#/JS habits? There is no `return x;` (use `result = x.` then `RETURN.`), no `null` (`IS INITIAL` / `IS NOT BOUND`), no `++`, no `!=` (use `<>`), and string literals are `` `...` `` or `'...'`, not `"..."` (in ABAP `"` starts a comment).
+4. Did I use Java/C#/JS habits? No `return x;`: statements end with a period, not `;`, and `RETURN expr.` (sets the returning parameter and exits) exists only in functional methods from 7.58 / ABAP Cloud 2211, so check the target release first and below that write `result = x.` then `RETURN.`. Also no `null` (`IS INITIAL` / `IS NOT BOUND`), no `++`, no `!=` (use `<>`), and string literals are `` `...` `` or `'...'`, not `"..."` (in ABAP `"` starts a comment).
 5. Every statement ends with a period, and chains `:` are used deliberately. Keywords are not case-sensitive, but follow the project's pretty-printer setting.
 6. Did I leave an empty FOR ALL ENTRIES driver unguarded, or a `SELECT` in a loop?
 7. Did I catch `CX_ROOT` or swallow exceptions? Catch the specific class, or wrap and re-raise.
