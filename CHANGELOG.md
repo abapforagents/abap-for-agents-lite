@@ -1,4 +1,9 @@
 # Changelog
+## 1.1.0 - 2026-11-09
+- Installable with `npx skills add abapforagents/abap-for-agents-lite`: new top-level `skills/` with `abap-coding-rules` (the 5 EN rules as one skill) and `abap-clean-core-review`.
+- Claude Code plugin marketplace: `.claude-plugin/marketplace.json` and `plugin.json` (`/plugin marketplace add abapforagents/abap-for-agents-lite`, then `/plugin install abap-for-agents-lite@abap-for-agents`).
+- No rule content changed; `skills/` is generated from `en/`.
+
 ## 1.0.1 - 2026-10-20
 - `90-llm-pitfalls` item 4 (EN + PT) is now release-aware: `RETURN expr.` in functional methods is valid from ABAP 7.58 / ABAP Cloud 2211; on older releases use `result = x.` then `RETURN.`. Check the target release first. Generated from ABAP for Agents Rules Pack v1.0.1.
 

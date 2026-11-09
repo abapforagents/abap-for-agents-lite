@@ -1,0 +1,17 @@
+{
+  "name": "abap-for-agents",
+  "description": "ABAP for Agents: rules and skills for AI coding agents working on SAP ABAP, CDS and RAP.",
+  "owner": {
+    "name": "ABAP for Agents",
+    "email": "hello@abapforagents.com",
+    "url": "https://abapforagents.com"
+  },
+  "plugins": [
+    {
+      "name": "abap-for-agents-lite",
+      "source": "./",
+      "description": "Free MIT ABAP coding rules (release-aware syntax, strict ABAP SQL, obsolete statements, AI pitfalls) and a Clean ABAP / clean core review skill.",
+      "category": "development"
+    }
+  ]
+}
